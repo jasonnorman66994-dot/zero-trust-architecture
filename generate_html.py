@@ -3,8 +3,19 @@
 Generate HTML documentation from Markdown files
 """
 import os
-import markdown
+import sys
 from pathlib import Path
+
+try:
+    import markdown
+except ImportError:
+    print("Error: The 'markdown' library is not installed.")
+    print("Please install it using: pip3 install markdown")
+    print("Or with a virtual environment:")
+    print("  python3 -m venv venv")
+    print("  source venv/bin/activate  # On Windows: venv\\Scripts\\activate")
+    print("  pip install markdown")
+    sys.exit(1)
 
 # Configuration
 BASE_DIR = Path(__file__).parent
@@ -331,15 +342,41 @@ sudo ./network-namespace-demo.sh
 """
 
 
-def convert_md_to_html(md_file, output_file, active_page=''):
-    """Convert a markdown file to HTML"""
-    # Read markdown content
-    with open(md_file, 'r', encoding='utf-8') as f:
-        md_content = f.read()
+def convert_md_to_html(md_file: Path, output_file: Path, active_page: str = '') -> None:
+    """Convert a markdown file to HTML
     
-    # Convert markdown to HTML
-    md_processor = markdown.Markdown(extensions=['extra', 'codehilite', 'tables', 'fenced_code'])
-    html_content = md_processor.convert(md_content)
+    Args:
+        md_file: Path to the input markdown file
+        output_file: Path to the output HTML file
+        active_page: Name of the active page for navigation highlighting
+    """
+    try:
+        # Read markdown content
+        with open(md_file, 'r', encoding='utf-8') as f:
+            md_content = f.read()
+    except FileNotFoundError:
+        print(f"✗ Error: Markdown file not found: {md_file}")
+        return
+    except IOError as e:
+        print(f"✗ Error reading {md_file}: {e}")
+        return
+    
+    try:
+        # Convert markdown to HTML
+        # Note: 'codehilite' extension requires Pygments for syntax highlighting
+        # If Pygments is not installed, code blocks will still render but without colors
+        md_processor = markdown.Markdown(extensions=['extra', 'codehilite', 'tables', 'fenced_code'])
+        html_content = md_processor.convert(md_content)
+    except Exception as e:
+        print(f"✗ Error converting markdown to HTML for {md_file}: {e}")
+        print("Note: For syntax highlighting, install Pygments: pip install Pygments")
+        # Fallback to basic markdown without codehilite
+        try:
+            md_processor = markdown.Markdown(extensions=['extra', 'tables', 'fenced_code'])
+            html_content = md_processor.convert(md_content)
+        except Exception as fallback_error:
+            print(f"✗ Fallback conversion also failed: {fallback_error}")
+            return
     
     # Get title from filename
     title = md_file.stem.replace('-', ' ').title()
@@ -362,13 +399,15 @@ def convert_md_to_html(md_file, output_file, active_page=''):
     )
     
     # Write HTML file
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(final_html)
-    
-    print(f"✓ Generated: {output_file}")
+    try:
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(final_html)
+        print(f"✓ Generated: {output_file}")
+    except IOError as e:
+        print(f"✗ Error writing {output_file}: {e}")
 
 
-def generate_index():
+def generate_index() -> None:
     """Generate index.html homepage"""
     nav_active = {
         'index_active': 'class="active"',
@@ -386,13 +425,15 @@ def generate_index():
     )
     
     output_file = BASE_DIR / 'index.html'
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(final_html)
-    
-    print(f"✓ Generated: {output_file}")
+    try:
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(final_html)
+        print(f"✓ Generated: {output_file}")
+    except IOError as e:
+        print(f"✗ Error writing {output_file}: {e}")
 
 
-def main():
+def main() -> None:
     """Main function to generate all HTML files"""
     print("Generating HTML documentation from Markdown files...")
     print("=" * 60)

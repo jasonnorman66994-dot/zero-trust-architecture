@@ -197,8 +197,12 @@ Edit `zero-trust-policy.sh` function `check_time_window()` to modify allowed hou
 Generate beautiful HTML documentation from the markdown files:
 
 ```bash
-# Install dependencies (first time only)
-pip3 install markdown --user
+# Recommended: Use a virtual environment for dependency isolation
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install markdown
 
 # Generate HTML files
 python3 generate_html.py
@@ -207,6 +211,15 @@ python3 generate_html.py
 # Open index.html in your browser or serve with:
 python3 -m http.server 8080
 # Then visit http://localhost:8080
+
+# When done, deactivate the virtual environment
+deactivate
+```
+
+Alternatively, install globally for the user:
+```bash
+pip3 install markdown --user
+python3 generate_html.py
 ```
 
 The generated HTML includes:
