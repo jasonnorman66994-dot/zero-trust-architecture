@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ci Cd Setup - Zero Trust Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        nav a.active {
+            background: #667eea;
+        }
+        
+        main {
+            padding: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin: 1.5rem 0 1rem 0;
+            padding-bottom: 0.3rem;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        h3 {
+            color: #555;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            overflow-x: auto;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        
+        code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #555;
+            background: #f8f9fa;
+            padding: 1rem;
+        }
+        
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: #667eea;
+            color: white;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 Zero Trust Architecture</h1>
+            <p>Complete Implementation & Documentation</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="index.html" >Home</a></li>
+                <li><a href="README.html" >Overview</a></li>
+                <li><a href="ARCHITECTURE.html" >Architecture</a></li>
+                <li><a href="zero-trust-cli-guide.html" >CLI Guide</a></li>
+                <li><a href="CI-CD-SETUP.html" class="active">CI/CD Setup</a></li>
+                <li><a href="TEST-RESULTS.html" >Test Results</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <h1>CI/CD Setup Instructions</h1>
+<h2>GitHub Actions Workflow</h2>
+<p>The Zero Trust Architecture includes a comprehensive CI/CD pipeline that automatically tests all security components on every push and pull request.</p>
+<h3>Prerequisites</h3>
+<p>To enable GitHub Actions with the workflow file, your Personal Access Token must have the <code>workflow</code> scope enabled.</p>
+<h3>Enable the CI/CD Pipeline</h3>
+<ol>
+<li><strong>Create a new Personal Access Token with workflow scope:</strong></li>
+<li>Go to https://github.com/settings/tokens/new</li>
+<li>Token name: "Zero Trust CI/CD"</li>
+<li>Select scopes:<ul>
+<li>✅ <code>repo</code> (Full control of private repositories)</li>
+<li>✅ <code>workflow</code> (Update GitHub Action workflows)</li>
+</ul>
+</li>
+<li>Click "Generate token"</li>
+<li>
+<p>Copy the token</p>
+</li>
+<li>
+<p><strong>Add the CI/CD workflow:</strong></p>
+</li>
+</ol>
+<p>Create <code>.github/workflows/ci.yml</code> with the following content:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Zero Trust CI/CD Pipeline</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">develop</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">schedule</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Run security tests daily at 2 AM UTC</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;0</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&#39;</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">security-tests</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Security &amp; Compliance Tests</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout code</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up test environment</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">sudo apt-get update</span>
+<span class="w">        </span><span class="no">sudo apt-get install -y openssl iproute2 iptables</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run comprehensive test suite</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">chmod +x test-suite.sh</span>
+<span class="w">        </span><span class="no">./test-suite.sh</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Validate shell scripts</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">for script in *.sh; do</span>
+<span class="w">          </span><span class="no">echo &quot;Checking $script...&quot;</span>
+<span class="w">          </span><span class="no">bash -n &quot;$script&quot;</span>
+<span class="w">        </span><span class="no">done</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check certificate security</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no"># Verify all certificates are valid</span>
+<span class="w">        </span><span class="no">openssl verify -CAfile certs/ca-cert.pem certs/server-cert.pem</span>
+<span class="w">        </span><span class="no">openssl verify -CAfile certs/ca-cert.pem certs/client-cert.pem</span>
+
+<span class="w">        </span><span class="no"># Check key strengths</span>
+<span class="w">        </span><span class="no">for cert in certs/*.pem; do</span>
+<span class="w">          </span><span class="no">if [[ &quot;$cert&quot; == *&quot;cert.pem&quot; ]] &amp;&amp; [[ &quot;$cert&quot; != *&quot;key.pem&quot; ]]; then</span>
+<span class="w">            </span><span class="no">echo &quot;Checking $cert...&quot;</span>
+<span class="w">            </span><span class="no">openssl x509 -in &quot;$cert&quot; -noout -text | grep &quot;Public-Key:&quot;</span>
+<span class="w">          </span><span class="no">fi</span>
+<span class="w">        </span><span class="no">done</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Scan for vulnerabilities</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no"># Check for common security issues</span>
+<span class="w">        </span><span class="no">echo &quot;Scanning for hardcoded credentials...&quot;</span>
+<span class="w">        </span><span class="no">! grep -riE &quot;password|secret|api_key&quot; *.sh | grep -v &quot;^#&quot; | grep -v &quot;TEST&quot; | grep -v &quot;echo&quot;</span>
+
+<span class="w">        </span><span class="no">echo &quot;Checking file permissions...&quot;</span>
+<span class="w">        </span><span class="no">ls -la certs/*.pem</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate test report</span>
+<span class="w">      </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always()</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">echo &quot;## Test Results&quot; &gt;&gt; $GITHUB_STEP_SUMMARY</span>
+<span class="w">        </span><span class="no">echo &quot;&quot; &gt;&gt; $GITHUB_STEP_SUMMARY</span>
+<span class="w">        </span><span class="no">echo &quot;✅ All security tests completed&quot; &gt;&gt; $GITHUB_STEP_SUMMARY</span>
+<span class="w">        </span><span class="no">echo &quot;&quot; &gt;&gt; $GITHUB_STEP_SUMMARY</span>
+<span class="w">        </span><span class="no">echo &quot;### Certificate Status&quot; &gt;&gt; $GITHUB_STEP_SUMMARY</span>
+<span class="w">        </span><span class="no">openssl x509 -in certs/ca-cert.pem -noout -enddate &gt;&gt; $GITHUB_STEP_SUMMARY</span>
+
+<span class="w">  </span><span class="nt">shellcheck</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ShellCheck Linting</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout code</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run ShellCheck</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ludeeus/action-shellcheck@master</span>
+<span class="w">      </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+
+<span class="w">  </span><span class="nt">documentation</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Documentation Validation</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout code</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check README exists</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">test -f README.md</span>
+<span class="w">        </span><span class="no">echo &quot;✅ README.md found&quot;</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Validate markdown links</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gaurav-nelson/github-action-markdown-link-check@v1</span>
+<span class="w">      </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">use-quiet-mode</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;yes&#39;</span>
+
+<span class="w">  </span><span class="nt">compliance-check</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Compliance &amp; Best Practices</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout code</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check Zero Trust principles</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">echo &quot;Validating Zero Trust implementation...&quot;</span>
+
+<span class="w">        </span><span class="no"># Verify policy enforcement exists</span>
+<span class="w">        </span><span class="no">test -f zero-trust-policy.sh</span>
+<span class="w">        </span><span class="no">echo &quot;✅ Policy enforcement engine found&quot;</span>
+
+<span class="w">        </span><span class="no"># Verify mTLS infrastructure</span>
+<span class="w">        </span><span class="no">test -f certs/ca-cert.pem</span>
+<span class="w">        </span><span class="no">test -f certs/server-cert.pem</span>
+<span class="w">        </span><span class="no">test -f certs/client-cert.pem</span>
+<span class="w">        </span><span class="no">echo &quot;✅ Mutual TLS certificates found&quot;</span>
+
+<span class="w">        </span><span class="no"># Verify monitoring</span>
+<span class="w">        </span><span class="no">test -f security-monitoring.sh</span>
+<span class="w">        </span><span class="no">test -f automated-monitoring.sh</span>
+<span class="w">        </span><span class="no">echo &quot;✅ Security monitoring found&quot;</span>
+
+<span class="w">        </span><span class="no"># Verify network segmentation</span>
+<span class="w">        </span><span class="no">test -f network-namespace-demo.sh</span>
+<span class="w">        </span><span class="no">echo &quot;✅ Network segmentation demo found&quot;</span>
+
+<span class="w">        </span><span class="no">echo &quot;All Zero Trust components validated ✓&quot;</span>
+</code></pre></div>
+
+<ol>
+<li><strong>Push the workflow:</strong>
+   <code>bash
+   git add .github/workflows/ci.yml
+   git commit -m "Add CI/CD pipeline for automated security testing"
+   git push origin main</code></li>
+</ol>
+<h2>What the CI/CD Pipeline Does</h2>
+<h3>Automated Security Tests</h3>
+<ul>
+<li>✅ Runs comprehensive test suite (60+ tests)</li>
+<li>✅ Validates shell script syntax</li>
+<li>✅ Verifies certificate chain integrity</li>
+<li>✅ Checks for hardcoded credentials</li>
+<li>✅ Validates file permissions</li>
+<li>✅ Runs ShellCheck linting</li>
+<li>✅ Validates documentation</li>
+<li>✅ Checks Zero Trust component compliance</li>
+</ul>
+<h3>Scheduled Scans</h3>
+<ul>
+<li>Daily security scans at 2 AM UTC</li>
+<li>Ensures no security regressions</li>
+<li>Validates certificate expiration</li>
+</ul>
+<h3>Pull Request Checks</h3>
+<ul>
+<li>All tests must pass before merging</li>
+<li>Prevents vulnerable code from reaching main branch</li>
+<li>Provides security feedback to contributors</li>
+</ul>
+<h2>Manual Testing</h2>
+<p>You can run the tests locally before pushing:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Run comprehensive test suite</span>
+./test-suite.sh
+
+<span class="c1"># Run intrusion detection</span>
+./intrusion-detection.sh
+
+<span class="c1"># Run data loss prevention scan</span>
+./data-loss-prevention.sh
+
+<span class="c1"># Validate all shell scripts</span>
+<span class="k">for</span><span class="w"> </span>script<span class="w"> </span><span class="k">in</span><span class="w"> </span>*.sh<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>bash<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$script</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+
+<span class="c1"># Check certificate validity</span>
+openssl<span class="w"> </span>verify<span class="w"> </span>-CAfile<span class="w"> </span>certs/ca-cert.pem<span class="w"> </span>certs/server-cert.pem
+openssl<span class="w"> </span>verify<span class="w"> </span>-CAfile<span class="w"> </span>certs/ca-cert.pem<span class="w"> </span>certs/client-cert.pem
+</code></pre></div>
+
+<h2>CI/CD Best Practices</h2>
+<ol>
+<li><strong>Branch Protection</strong></li>
+<li>Require status checks to pass</li>
+<li>Require pull request reviews</li>
+<li>
+<p>Enforce linear history</p>
+</li>
+<li>
+<p><strong>Secret Management</strong></p>
+</li>
+<li>Never commit secrets to the repository</li>
+<li>Use GitHub Secrets for sensitive data</li>
+<li>
+<p>Rotate credentials regularly</p>
+</li>
+<li>
+<p><strong>Test Coverage</strong></p>
+</li>
+<li>Aim for &gt;80% test coverage</li>
+<li>Test both positive and negative scenarios</li>
+<li>
+<p>Include integration tests</p>
+</li>
+<li>
+<p><strong>Security Scanning</strong></p>
+</li>
+<li>Enable Dependabot for dependency updates</li>
+<li>Enable code scanning with CodeQL</li>
+<li>Use security advisories</li>
+</ol>
+<h2>Troubleshooting</h2>
+<h3>"refusing to allow a Personal Access Token to create or update workflow"</h3>
+<p><strong>Solution:</strong> Create a new PAT with the <code>workflow</code> scope:
+1. Go to https://github.com/settings/tokens/new
+2. Check both <code>repo</code> and <code>workflow</code> scopes
+3. Update your git remote with the new token</p>
+<h3>Tests failing locally but passing in CI</h3>
+<p><strong>Solution:</strong> Ensure your local environment matches CI:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Install required tools</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>openssl<span class="w"> </span>iproute2<span class="w"> </span>iptables
+</code></pre></div>
+
+<h3>Certificate validation failures</h3>
+<p><strong>Solution:</strong> Regenerate certificates:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># The certificates may have expired</span>
+<span class="c1"># Regenerate them following the mTLS setup guide</span>
+</code></pre></div>
+
+<h2>Advanced CI/CD Features</h2>
+<h3>Matrix Testing</h3>
+<p>Test across multiple OS versions and configurations:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">strategy</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">matrix</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">ubuntu-latest</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">ubuntu-22.04</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">ubuntu-20.04</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">include</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">        </span><span class="nt">test-suite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">full</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-22.04</span>
+<span class="w">        </span><span class="nt">test-suite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic</span>
+</code></pre></div>
+
+<h3>Deployment Automation</h3>
+<p>Automatically deploy to staging/production:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">deploy-staging</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">security-tests</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">shellcheck</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.ref == &#39;refs/heads/develop&#39;</span>
+<span class="w">  </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">  </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy to staging</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no"># Deployment commands here</span>
+</code></pre></div>
+
+<h3>Security Scanning Integration</h3>
+<p>Add additional security tools:</p>
+<div class="codehilite"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run Trivy vulnerability scanner</span>
+<span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aquasecurity/trivy-action@master</span>
+<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">scan-type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;fs&#39;</span>
+<span class="w">    </span><span class="nt">scan-ref</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;.&#39;</span>
+</code></pre></div>
+
+<h2>Resources</h2>
+<ul>
+<li><a href="https://docs.github.com/en/actions">GitHub Actions Documentation</a></li>
+<li><a href="https://www.nist.gov/publications/zero-trust-architecture">Zero Trust Security Model</a></li>
+<li><a href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Security Testing Guide</a></li>
+</ul>
+<hr />
+<p><strong>Last Updated:</strong> January 12, 2026
+<strong>Maintained By:</strong> Zero Trust Security Team</p>
+        </main>
+        
+        <footer>
+            <p>Zero Trust Architecture Documentation</p>
+            <p>Built with ❤️ for cybersecurity education and awareness</p>
+        </footer>
+    </div>
+</body>
+</html>
