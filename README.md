@@ -192,6 +192,31 @@ Edit `zero-trust-policy.sh` function `check_time_window()` to modify allowed hou
 - **Security Auditing** - Template for security assessments
 - **Compliance** - Meet zero-trust requirements
 
+## 📚 HTML Documentation
+
+Generate beautiful HTML documentation from the markdown files:
+
+```bash
+# Install dependencies (first time only)
+pip3 install markdown --user
+
+# Generate HTML files
+python3 generate_html.py
+
+# View the documentation
+# Open index.html in your browser or serve with:
+python3 -m http.server 8080
+# Then visit http://localhost:8080
+```
+
+The generated HTML includes:
+- `index.html` - Documentation hub homepage
+- `README.html` - Project overview
+- `ARCHITECTURE.html` - Detailed architecture documentation
+- `zero-trust-cli-guide.html` - CLI implementation guide
+- `CI-CD-SETUP.html` - CI/CD setup instructions
+- `TEST-RESULTS.html` - Test results and validation
+
 ## 🤝 Contributing
 
 This is a demonstration/educational project. Feel free to:
