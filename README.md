@@ -192,6 +192,44 @@ Edit `zero-trust-policy.sh` function `check_time_window()` to modify allowed hou
 - **Security Auditing** - Template for security assessments
 - **Compliance** - Meet zero-trust requirements
 
+## 📚 HTML Documentation
+
+Generate beautiful HTML documentation from the markdown files:
+
+```bash
+# Recommended: Use a virtual environment for dependency isolation
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install markdown
+
+# Generate HTML files
+python3 generate_html.py
+
+# View the documentation
+# Open index.html in your browser or serve with:
+python3 -m http.server 8080
+# Then visit http://localhost:8080
+
+# When done, deactivate the virtual environment
+deactivate
+```
+
+Alternatively, install globally for the user:
+```bash
+pip3 install markdown --user
+python3 generate_html.py
+```
+
+The generated HTML includes:
+- `index.html` - Documentation hub homepage
+- `README.html` - Project overview
+- `ARCHITECTURE.html` - Detailed architecture documentation
+- `zero-trust-cli-guide.html` - CLI implementation guide
+- `CI-CD-SETUP.html` - CI/CD setup instructions
+- `TEST-RESULTS.html` - Test results and validation
+
 ## 🤝 Contributing
 
 This is a demonstration/educational project. Feel free to:
